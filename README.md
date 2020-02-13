@@ -1,11 +1,15 @@
 ## Deep Q-Learning Lunar Lander
 
-**Update Notes**
+### **Update Notes**
 As of 2/12 the project is almost complete! I estimate that there is less than one week until the final project is ready, so if you are here before then, welcome! If you are attemptint to run this program on your own machine, <em>it will not work</em>. Please check back again after some time to see if anything changes, and if you have any questions, please contact me at tejagoparaju@gmail.com, but please include the project title in the subject of the email, or I will not respond!
 
 **To-Do list**
-There are still some things to complete before the I think the project can be completed. 
+There are still some things to complete before the I think the project can be completed. For the structure of the game itself:
 1. An implementation of a 'reset' function that places the lander at the top of the screen when it crashes
+2. An action to perform when the lander successfully lands the lander on the surface
+
+And for the implementation of the AI:
+1. Implementation of the Deep Q-Learning, in the landing_seq.py. The network needs to be linked to moon.py so that the AI can actually play the game.
 2. 
 
 ### Acknowlegements
