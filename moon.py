@@ -5,18 +5,8 @@ import numpy as np
 from random import random, randint
 import matplotlib.pyplot as plt
 import time
-#import turtle
 from graphics import *
 
-#from lander import Dqn
-
-#wn = turtle.Screen()
-#wn.bgcolor("black")
-#wn.title("Lunar Lander")
-#wn.tracer(0)
-#wn.setup(width = 1000, height = 600, startx=None, starty=None)
-#wn.setup(width = 0.75, height = 0.75)
-#wn.setworldcoordinates(0,0,1000,600)
 
 wn = GraphWin("Lunar Lander", 1000, 600)
 wn.setCoords(0,0,1000,600)
@@ -30,18 +20,11 @@ class Lander():
         self.fuel = 1000
         # Initial amount of fuel for every instance of the lander
         
-#        self.lander = turtle.Turtle()
-#        self.lander.shape("square")
-#        self.lander.shapesize(2,4)
-#        self.lander.color("white")
-#        self.lander.penup()
-#        self.lander.goto(100,550)
-#        self.lander.goto(0,0)
-        
         # Given by graphics.py # Point(120,520)
         self.lander = Polygon(Point(105,512.5), Point(115,512.5), Point(120,500), Point(100,500))
         self.reset_points = [Point(105,512.5), Point(115,512.5), Point(120,500), Point(100,500)]
         
+        # Testing and debugging code
 #        self.lander = Polygon(Point(100,100), Point((100+(25/2)*np.sqrt(2)),(100+(25/2)*np.sqrt(2))), 
 #            Point(100+25*np.sqrt(2),100), Point((100+(25/2)*np.sqrt(2)),(100-(25/2)*np.sqrt(2))))
 #        self.lander = Polygon(Point((100+(25/2)*np.sqrt(2)),(100+(25/2)*np.sqrt(2))),
@@ -53,8 +36,6 @@ class Lander():
         
         self.rotate(30) # Initial rotation angle of the lander, given in degrees
         
-#        self.lander.speed(0)
-        
         # Initial x and y velocities of the lander. Positive values mean +v_x and +v_y
         self.dy = 0
         self.dx = 0.5
@@ -62,12 +43,6 @@ class Lander():
         # The angle of the lander, not initialized here since it is only a self-referential variable
         # that is assigned to later.
         self.angle = 0
-        
-#        self.lander.tiltangle(80)
-#        print(wn.canvheight, wn.canvwidth)
-        
-#        print(np.sin(45))
-#        print(wn.delay())
         
     def fireThruster(self):
         if (self.fuel > 0): 
@@ -118,32 +93,11 @@ class Lander():
         else:
             self.lander.points = old_points
         
+        # More debugging code
 #        return new_points
-        
-        
-#        self.lander.undraw()
-#        self.lander = Polygon(new_points)
-#        self.lander.draw(wn)
         
 #        p1 = self.lander.getP1()
 #        p2 = self.lander.getP2()
-        
-#        if (self.lander.tiltangle() <= 270 and self.lander.tiltangle() > 0):
-#            self.lander.tiltangle(270)
-#        if (self.lander.tiltangle() >= 90):
-#            self.lander.tiltangle(90)
-        
-#        self.lander.tiltangle(self.lander.tiltangle() + dtheta)
-        
-#        if (self.lander.tiltangle() >= 270 or self.lander.tiltangle() <= 90):
-#            self.lander.tilt(dtheta*direction)
-#        
-#        if (self.lander.tiltangle() == 91):
-#            self.lander.tiltangle(90)
-#        if (self.lander.tiltangle() == 269):
-#            self.lander.tiltangle(270)
-        
-#        print(self.lander.tiltangle())
        
     def getAngle(self):
         # Internal method to determine the angle of the lander with respect to the x-axis. Used to 
@@ -174,7 +128,7 @@ class Lander():
         # the average values of the x and y distances. This code is modified from the same function
         # in graphics.py that calculates the center of a rectangle or oval, but here instead of
         # just two points, there are 3 or 4. This is because in Zelle's code, the Polygon class has
-        # no method for retrieving the calculating the center, only in the Rectangle or Oval classes
+        # no method for retrieving or calculating the center, only in the Rectangle or Oval classes
         arrx = []
         for x in self.lander.getPoints():
             arrx.append(x.getX())
@@ -186,27 +140,11 @@ class Lander():
         avg_y = np.average(arry)
         
         return Point(avg_x,avg_y)
-        
 
-#    def isCrashed(self, slope):
-#        points = self.lander.getPoints()
-#        p3 = points[len(points)-2]
-#        p4 = points[len(points)-1]
-#        
-#        height = np.min(p3.getY(),p4.getY())
-#        abs_speed = np.sqrt(self.dx^2 + self.dy^2)
-        
-#        height = np.min(self.la)
-        
-#        print(slope)
-#        return False
-    
-#    def isLanded(self):
-#        return False
 
 # Initialize the moon lander outside of the classes as a global variable
 apollo1 = Lander()
-
+#from lander import Dqn
 gravity = 0.005
 
 class LanderGame():   
