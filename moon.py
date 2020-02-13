@@ -12,8 +12,7 @@ wn = GraphWin("Lunar Lander", 1000, 600)
 wn.setCoords(0,0,1000,600)
 #wn.setBackground("black")
 
-#dtheta = 1
-#rotationAction = [0,1,-1] #No rotation = index 0, counterclockwise rotation = index 1, clockwise = index 2
+
 
 class Lander():
     def __init__(self):
@@ -145,7 +144,9 @@ class Lander():
 # Initialize the moon lander outside of the classes as a global variable
 apollo1 = Lander()
 #from lander import Dqn
-gravity = 0.005
+#rotationAction = [0,1,-1] #No rotation = index 0, counterclockwise rotation = index 1, clockwise = index 2.
+# Has not implemented yet
+gravity = 0.005 # This is the amount by which the velocity changes in each loop of the update function
 
 class LanderGame():   
     def __init__(self):
@@ -201,7 +202,8 @@ class LanderGame():
                 x.setWidth(5)
                 x.draw(wn)
 #                Line(Point(i,terrain[int(i/20)]),Point(i+20,terrain[int((i/20)+1)])).draw(wn)
-            
+         
+        # Debugging code to test terrain drawing
 #        test1 = Line(Point(0,100),Point(200,0),[None,"white",5])
 #        test1.setWidth(5)
 #        test1.setFill("white")
@@ -209,6 +211,8 @@ class LanderGame():
 #        print(test1.getP2())
     
     def isCrashed(self, elevation):
+        # If the lander makes contact with the ground when it is going too fast, this checker returns True,
+        # otherwise it returns False
         lander_speed = np.sqrt(apollo1.dx**2 + apollo1.dy**2)
         tilt_angle = np.degrees(apollo1.getAngle())
         
@@ -220,6 +224,7 @@ class LanderGame():
         return False
     
     def isLanded(self):
+        # This method has yet to be implemented
         return False
     
     def reset(self):
@@ -285,6 +290,8 @@ class LanderGame():
         # Optimal amount of delay for smooth animation speed
         time.sleep(0.035)
         
+        # Testing code to see if the lander can take every action available to it
+        
 #        apollo1.fireThruster()
 #        apollo1.lander.undraw()
 #        apollo1.rotate(-1)
@@ -303,35 +310,11 @@ class LanderGame():
         else: 
             apollo1.dy = 0
             apollo1.dx = 0
-#            apollo1.lander.move(0,apollo1.dy)
-#            apollo1.rotate(45)
-#            apollo1.lander.undraw()
-#            apollo1.lander.draw(wn)
-#        if apollo1.getCenter().getY() <= 250: apollo1.rotate(45)
 
 #        print(apollo1.dx,apollo1.dy)
         apollo1.lander.move(apollo1.dx,apollo1.dy)
 #        print(apollo1.fuel)
-        
-#====================================================        
-        
-        
-#        wn.update()        
-#        apollo1.lander.sety(10)
-    #    print(apollo1.lander.dy)
-    #        apollo1.lander.setx(0)
-    #        apollo1.lander.sety(0)
-        
-#        wn.ontimer(apollo1.rotate(rotationAction[0]),50)
-        
-    #        apollo1.fireThruster()
-    #        print(apollo1.fuel)
-        
-    #    if apollo1.lander.ycor() < 10:
-    #        apollo1.lander.sety(10)
-        
-
-#====================================================        
+    
 
 #def update():
 ##    while(apollo1.isCrashed() == False and apollo1.isLanded() == False and wn.isOpen()):
@@ -359,6 +342,6 @@ class LanderGame():
 
 game = LanderGame()
 #update()
+# For some reason these two lines are necessary for the program to work
 wn.getMouse()
 wn.close()
-#wn.mainloop()
