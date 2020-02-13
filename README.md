@@ -1,5 +1,13 @@
 ## Deep Q-Learning Lunar Lander
 
+**Update Notes**
+As of 2/12 the project is almost complete! I estimate that there is less than one week until the final project is ready, so if you are here before then, welcome! If you are attemptint to run this program on your own machine, <em>it will not work</em>. Please check back again after some time to see if anything changes, and if you have any questions, please contact me at tejagoparaju@gmail.com
+
+**To-Do list**
+There are still some things to complete before the I think the project can be completed. 
+1. An implementation of a 'reset' function that places the lander at the top of the screen when it crashes
+2. 
+
 ### Acknowlegements
 Special thanks to Kirill Eremenko and Hadelin de Ponteves at Super Data Science on Udemy for their course on Artificial Intelligence, and for teaching how to use the pytorch module in Python. The code in the 'lander_seq.py' file is adapted from the course they teach, and is modified by me to fit this particular project. Learn more at https://superdatascience.com
 
