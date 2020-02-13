@@ -77,7 +77,7 @@ class ExperienceReplay(object):
         return map(lambda x: Variable(torch.cat(x, 0)), samples)
 
 """ !!! Still a work in progress !!! Check back again at another time!
-class Deep_Q_Network():
+class DeepQNetwork():
     
     def __init__(self, input_size, nb_action, gamma):
         self.gamma = gamma
