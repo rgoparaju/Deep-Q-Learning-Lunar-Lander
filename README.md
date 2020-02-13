@@ -1,7 +1,7 @@
 ## Deep Q-Learning Lunar Lander
 
 **Update Notes**
-As of 2/12 the project is almost complete! I estimate that there is less than one week until the final project is ready, so if you are here before then, welcome! If you are attemptint to run this program on your own machine, <em>it will not work</em>. Please check back again after some time to see if anything changes, and if you have any questions, please contact me at tejagoparaju@gmail.com
+As of 2/12 the project is almost complete! I estimate that there is less than one week until the final project is ready, so if you are here before then, welcome! If you are attemptint to run this program on your own machine, <em>it will not work</em>. Please check back again after some time to see if anything changes, and if you have any questions, please contact me at tejagoparaju@gmail.com, but please include the project title in the subject of the email, or I will not respond!
 
 **To-Do list**
 There are still some things to complete before the I think the project can be completed. 
