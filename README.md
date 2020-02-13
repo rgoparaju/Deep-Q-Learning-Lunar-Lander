@@ -4,5 +4,5 @@ Special thanks to Kirill Eremenko and Hadelin de Ponteves at Super Data Science 
 
 In this project I am also using John Zelle's 'graphics.py,' open-source file (licensed under GNU General Public License) that contains a simple library for basic shapes and animation. This file is included in the repo, so no additional download is required.
 
-# Install instructions
+### Install instructions
 In order for this project to run on your machine, first Python 3 must be installed, as well as the pytorch package. To install pytorch, visit https://pytorch.org/get-started/locally/ and follow the instructions for your configuration. 
