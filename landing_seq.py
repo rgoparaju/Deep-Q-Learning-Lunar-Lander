@@ -44,7 +44,7 @@ class NeuralNetwork(nn.Module):
         self.full_connection_2 = nn.Linear(30,30)
         self.full_connection_3 = nn.Linear(30, actions)
     
-    # Function that activates the neurons, using the rectifier function which is used because this
+    # Function that activates the neurons, using the rectifier function since this
     # is a nonlinear problem.
     def forward(self, state): # state is the input to the neural network
         x = F.relu(self.full_connection_1(state)) # relu - rectifier
