@@ -30,4 +30,6 @@ The 'Deep' part of Deep Q-Learning stems from the fact that there is an artifici
 ### Install instructions
 In order for this project to run on your machine, first Python 3 must be installed, as well as the pytorch package. To install pytorch, visit https://pytorch.org/get-started/locally/ and follow the instructions for your configuration.
 
+In order to run the program, set the cloned repo as the working directory in your IDE of choice, and execute the 'moon.py' file. The 'landing_seq.py' file does not run, since its only purpose is to create the neural network to play the game created in 'moon.py.'
+
 
