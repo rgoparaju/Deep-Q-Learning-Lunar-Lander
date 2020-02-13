@@ -76,8 +76,8 @@ class ExperienceReplay(object):
         samples = zip(*random.sample(self.memory, batch_size))
         return map(lambda x: Variable(torch.cat(x, 0)), samples)
 
-""" !!! Still a work in progress !!! 
-class Landing_Sequence():
+""" !!! Still a work in progress !!! Check back again at another time!
+class Deep_Q_Network():
     
     def __init__(self, input_size, nb_action, gamma):
         self.gamma = gamma
