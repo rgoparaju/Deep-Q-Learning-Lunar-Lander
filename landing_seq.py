@@ -5,7 +5,7 @@
 # 'brain' of the AI, so that it can be reused even after the program is closed
 
 import os
-
+import random
 # pytorch libraries. torch.nn contains the tools to implement the neural network
 import torch
 import torch.nn as nn
@@ -16,6 +16,7 @@ import torch.nn.functional as F
 import torch.optim as optim 
 
 import torch.autograd as autograd
+
 # This class is used to convert tensors into a variable that contains a gradient
 from torch.autograd import Variable 
 
@@ -44,7 +45,7 @@ class NeuralNetwork(nn.Module):
         self.full_connection_2 = nn.Linear(30,30)
         self.full_connection_3 = nn.Linear(30, actions)
     
-    # Function that activates the neurons, using the rectifier function since this
+    # Function that activates the neurons, using the rectifier function which is used because this
     # is a nonlinear problem.
     def forward(self, state): # state is the input to the neural network
         x = F.relu(self.full_connection_1(state)) # relu - rectifier
@@ -58,8 +59,7 @@ class NeuralNetwork(nn.Module):
         # of the environment. 
         return q_values
 
-# Experience Replay - allows the AI to learn from the previous rewards it has received to determine how 
-# it should proceed with learning. 
+# Experience Replay
 
 class ExperienceReplay(object):
     
@@ -76,8 +76,7 @@ class ExperienceReplay(object):
         samples = zip(*random.sample(self.memory, batch_size))
         return map(lambda x: Variable(torch.cat(x, 0)), samples)
 
-""" !!! Still a work in progress !!! Check back again at another time!
-class DeepQNetwork():
+class Landing_Sequence():
     
     def __init__(self, input_size, nb_action, gamma):
         self.gamma = gamma
@@ -89,4 +88,49 @@ class DeepQNetwork():
         self.last_action = 0
         self.last_reward = 0
     
-"""    
+    def select_action(self, state):
+        probs = F.softmax(self.model(Variable(state, volatile = True))*50) # T=50
+        action = probs.multinomial(1)
+        return action.data[0,0]
+    
+    def learn(self, batch_state, batch_next_state, batch_reward, batch_action):
+        outputs = self.model(batch_state).gather(1, batch_action.unsqueeze(1)).squeeze(1)
+        next_outputs = self.model(batch_next_state).detach().max(1)[0]
+        target = self.gamma*next_outputs + batch_reward
+        td_loss = F.smooth_l1_loss(outputs, target)
+        self.optimizer.zero_grad()
+        td_loss.backward(retain_graph = True)
+        self.optimizer.step()
+    
+    def update(self, reward, new_signal):
+        new_state = torch.Tensor(new_signal).float().unsqueeze(0)
+        self.memory.push((self.last_state, new_state, torch.LongTensor([int(self.last_action)]), torch.Tensor([self.last_reward])))
+        action = self.select_action(new_state)
+        if len(self.memory.memory) > 100:
+            batch_state, batch_next_state, batch_action, batch_reward = self.memory.sample(100)
+            self.learn(batch_state, batch_next_state, batch_reward, batch_action)
+        self.last_action = action
+        self.last_state = new_state
+        self.last_reward = reward
+        self.reward_window.append(reward)
+        if len(self.reward_window) > 1000:
+            del self.reward_window[0]
+        return action
+    
+    def score(self):
+        return sum(self.reward_window)/(len(self.reward_window)+1.)
+    
+    def save(self):
+        torch.save({'state_dict': self.model.state_dict(),
+                    'optimizer' : self.optimizer.state_dict(),
+                   }, 'last_landing_seq.pth')
+    
+    def load(self):
+        if os.path.isfile('last_landing_seq.pth'):
+            print("Loading...")
+            checkpoint = torch.load('last_landing_seq.pth')
+            self.model.load_state_dict(checkpoint['state_dict'])
+            self.optimizer.load_state_dict(checkpoint['optimizer'])
+            print("Loaded")
+        else:
+            print("No Sequence Found")
