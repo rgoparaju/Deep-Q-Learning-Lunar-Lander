@@ -23,7 +23,7 @@ pilot = Landing_Sequence(5, 3, 0.9)
 apollo1 = Lander()
 
 # Amount of gravitational acceleration applied in each loop of time dt of the update function
-gravity = 0.0 # 0.00075
+gravity = 0.00075
 
 class LanderGame():   
     def __init__(self):
@@ -43,6 +43,7 @@ class LanderGame():
         #-------------------------------------------------------------------------------------
         # Draw amount of fuel the lander has to the upper left of the screen
         self.amount_of_fuel = Text(Point(45,575), "Fuel: " + str(apollo1.fuel))
+        self.amount_of_fuel.setFill("white")
         self.amount_of_fuel.draw(wn)
         #-------------------------------------------------------------------------------------
         self.game_state = True
@@ -83,6 +84,7 @@ class LanderGame():
         tilt_angle = np.degrees(apollo1.getAngle())
         
         if apollo1.getCenter().getX() < 10 or apollo1.getCenter().getX() > 1240: return True
+        if apollo1.getCenter().getY() >= 590: return True
         if elevation < 1 and slope > 0.05: return True
         
         if((lander_speed > 0.05 or np.abs(tilt_angle) > 2) and elevation < 1):
