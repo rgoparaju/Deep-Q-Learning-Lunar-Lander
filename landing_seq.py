@@ -20,17 +20,15 @@ import torch.autograd as autograd
 # This class is used to convert tensors into a variable that contains a gradient
 from torch.autograd import Variable 
 
-# Neural Network class - there are three layers of 'neurons', the input layer, one hidden layer,
+# Neural Network class - there are three layers of 'neurons', the input layer, two hidden layers,
 # and finally the output layer, that gives q-values that determine what action the lander takes.
 class NeuralNetwork(nn.Module):
-    
     def __init__(self, input_size, actions):
         super(NeuralNetwork, self).__init__() # Trick to use methods in Module
         
-        # input_size is the size of the vector that encodes the input state for the lander at all
-        # times. There are 5 inputs: the rotation angle of the lander, the x-speed, the y-speed, 
+        # input_size is the size of the vector of the input state for the lander at all times.
+        # There are 5 inputs: the rotation angle of the lander, the x-speed, the y-speed, 
         # the slope of the ground beneath the lander, and the height of the lander from the ground.
-        # This also corresponds to the number of input neurons in the network
         self.input_size = input_size
         
         # Final output action the network determines. There are three actions: rotate left, rotate
@@ -41,28 +39,25 @@ class NeuralNetwork(nn.Module):
         # A full connection is the set of connections between each layer of neurons. Since there are
         # two hidden layers, there are 3 full connections between each layer. 30 means that there
         # are 30 neurons in each layer.
-        self.full_connection_1 = nn.Linear(input_size, 30)
-        self.full_connection_2 = nn.Linear(30,30)
-        self.full_connection_3 = nn.Linear(30, actions)
+        self.fc1 = nn.Linear(input_size, 30)
+        self.fc2 = nn.Linear(30,30)
+        self.fc3 = nn.Linear(30, actions)
     
-    # Function that activates the neurons, using the rectifier function which is used because this
-    # is a nonlinear problem.
+    # Rectifier function activates the neurons, used because this is a nonlinear problem.
     def forward(self, state): # state is the input to the neural network
-        x = F.relu(self.full_connection_1(state)) # relu - rectifier
-        y = F.relu(self.full_connection_2(x))
-        q_values = self.full_connection_3(y)
+        x = F.relu(self.fc1(state))
+        y = F.relu(self.fc2(x))
+        q_values = self.fc3(y)
         
-        # The q-values are essentially how the AI determines which action to take. If a given action
-        # has a higher q-value, it means that the AI has a higher probability of choosing that 
-        # action. Since we are implementing a Markov Decision Process, the AI is not guaranteed to
-        # choose the action with the highest q-value all the time, in order to encourage exploration
-        # of the environment. 
+        # The q-values are how the AI determines which action to take. If a given action has a 
+        # higher q-value, it means that the AI has a higher probability of choosing that action.
+        # Since we are implementing a Markov Decision Process, the AI is not guaranteed to choose
+        # the action with the highest q-value all the time, in order to encourage exploration of 
+        # the environment. 
         return q_values
 
 # Experience Replay
-
 class ExperienceReplay(object):
-    
     def __init__(self, capacity):
         self.capacity = capacity
         self.memory = []
@@ -77,7 +72,6 @@ class ExperienceReplay(object):
         return map(lambda x: Variable(torch.cat(x, 0)), samples)
 
 class Landing_Sequence():
-    
     def __init__(self, input_size, nb_action, gamma):
         self.gamma = gamma
         self.reward_window = []
