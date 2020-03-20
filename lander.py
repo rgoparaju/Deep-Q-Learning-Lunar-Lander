@@ -31,8 +31,8 @@ class Lander():
             
             # The thruster is being fired perpendicularly from the bottom of the lander,
             # thus it is necessary to decompose the change-in-velocity vector into x and y components        
-            self.dy += 0.005*np.cos(angle)
-            self.dx += 0.005*np.sin(angle)
+            self.dy += 0.0005*np.cos(angle)
+            self.dx += 0.0005*np.sin(angle)
         
     def rotate(self, theta):
         center = self.getCenter()
