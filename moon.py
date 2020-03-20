@@ -189,17 +189,14 @@ class LanderGame():
         scores.append(pilot.score())
         
         if action == 0:
-            print("Firing Thruster")
             for i in range(2):
                 apollo1.fireThruster()
         if action == 1:
-            print("Rotating Counterclockwise")
             for i in range(5):
                 apollo1.lander.undraw()
                 apollo1.rotate(0.5)
                 apollo1.lander.draw(wn)
         if action == 2:
-            print("Rotating Clockwise")
             for i in range(5):
                 apollo1.lander.undraw()
                 apollo1.rotate(-0.5)
