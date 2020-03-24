@@ -81,6 +81,7 @@ class ExperienceReplay(object):
         samples = zip(*random.sample(self.memory, batch_size))
         return map(lambda x: Variable(torch.cat(x, 0)), samples)
 
+#     
 class Landing_Sequence():
     def __init__(self, input_size, nb_action, gamma):
         self.gamma = gamma
