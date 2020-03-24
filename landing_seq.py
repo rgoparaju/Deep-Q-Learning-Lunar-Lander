@@ -43,7 +43,8 @@ class NeuralNetwork(nn.Module):
         self.fc2 = nn.Linear(30,30)
         self.fc3 = nn.Linear(30, actions)
     
-    # Rectifier function activates the neurons, used because this is a nonlinear problem.
+    # Rectifier function activates the neurons during forward propagation. The rectifier is used
+    # because this is a nonlinear problem.
     def forward(self, state): # state is the input to the neural network
         x = F.relu(self.fc1(state))
         y = F.relu(self.fc2(x))
@@ -56,17 +57,23 @@ class NeuralNetwork(nn.Module):
         # the environment. 
         return q_values
 
-# Experience Replay
+# Experience Replay is used to store the past states and rewards the neural network earned so that
+# it can sample them to learn how to make its next decision. It can be considered a "long-term"
+# memory for the network. 
 class ExperienceReplay(object):
     def __init__(self, capacity):
         self.capacity = capacity
         self.memory = []
     
+    # This method adds new experiences to the class's memory, as well as making sure the memory
+    # does not exceed its capacity. The event object is a tuple which contains the last state of
+    # the lander, the new upcoming state, the last action performed, and the last reward earned.
     def push(self, event):
         self.memory.append(event)
         if len(self.memory) > self.capacity:
             del self.memory[0]
     
+    # 
     def sample(self, batch_size):
         samples = zip(*random.sample(self.memory, batch_size))
         return map(lambda x: Variable(torch.cat(x, 0)), samples)
