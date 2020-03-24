@@ -73,7 +73,10 @@ class ExperienceReplay(object):
         if len(self.memory) > self.capacity:
             del self.memory[0]
     
-    # 
+    # Returns a random sample of the elements in the memory object. The zip(*) function groups
+    # the states, actions and rewards that are in each memory tuple, to be mapped into pytorch 
+    # Variables that have associated gradients. This is used later when performing stochastic
+    # gradient descent. 
     def sample(self, batch_size):
         samples = zip(*random.sample(self.memory, batch_size))
         return map(lambda x: Variable(torch.cat(x, 0)), samples)
