@@ -81,15 +81,27 @@ class ExperienceReplay(object):
         samples = zip(*random.sample(self.memory, batch_size))
         return map(lambda x: Variable(torch.cat(x, 0)), samples)
 
-#     
+# This class takes an object of the NeuralNetwork class created above and performs deep q-learning
+# with it. This is like a 'pilot' that is tasked with learning how to land the lunar lander. 
 class Landing_Sequence():
     def __init__(self, input_size, nb_action, gamma):
         self.gamma = gamma
-        self.reward_window = []
+        
+        # Sliding window of the mean of the last 100 rewards the AI received
+        self.reward_window = [] 
+        
         self.model = NeuralNetwork(input_size, nb_action)
         self.memory = ExperienceReplay(100000)
+        
+        # The optimizer is used to help perform stochastic gradient descent during back-propagation.
+        # lr is called the learning rate, which helps the AI learn to explore its environment.
         self.optimizer = optim.Adam(self.model.parameters(), lr = 0.001)
+        
+        # Though the input comes in as a list, it needs to be changed into a Torch tensor with an 
+        # extra dimension. This extra dimension is added by using the 'unsqueeze' trick. This is
+        # because the network expects the input state to come in as a batch.
         self.last_state = torch.Tensor(input_size).unsqueeze(0)
+        
         self.last_action = 0
         self.last_reward = 0
     
