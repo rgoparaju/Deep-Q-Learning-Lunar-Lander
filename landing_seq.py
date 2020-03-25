@@ -125,12 +125,16 @@ class Landing_Sequence():
         # we need to use the unsqueeze function. Finally, squeeze collapses this extra batch
         # dimension to turn back into a simple vector of outputs.
         outputs = self.model(batch_state).gather(1, batch_action.unsqueeze(1)).squeeze(1)
-        
+        # next_outputs is used to compute the target values. Detach is a function used to
+        # to get the q-values from the random sample of events.
         next_outputs = self.model(batch_next_state).detach().max(1)[0]
         target = self.gamma*next_outputs + batch_reward
+        # td_loss stands for 'temporal difference loss'
         td_loss = F.smooth_l1_loss(outputs, target)
+        # Stochastic gradient descent using the optimizer, Adam
         self.optimizer.zero_grad()
         td_loss.backward(retain_graph = True)
+        # Update weights of the network
         self.optimizer.step()
     
     def update(self, reward, new_signal):
