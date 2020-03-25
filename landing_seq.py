@@ -105,10 +105,18 @@ class Landing_Sequence():
         self.last_action = 0
         self.last_reward = 0
     
+    # This function takes the input state vector as a parameter and using the softmax function,
+    # generates a probability for each q-value. These q-values correspond to the actions the 
+    # lander can take; that is, rotate clockwise, counterclockwise, or fire the thruster. The
+    # most favorable action will have the highest probability of occurring.
+    # This input still needs to be converted to a Variable object, but since we do not require
+    # an associated gradient, we set requires_grad to False.
+    # The T parameter will be able to change how 'certain' the network is of taking any given
+    # action, so changing it will change the learning behavior (higher is more certain).
     def select_action(self, state):
-        probs = F.softmax(self.model(Variable(state, volatile = True))*50) # T=50
+        probs = F.softmax(self.model(Variable(state, requires_grad = True))*50) # T=50
         action = probs.multinomial(1)
-        return action.data[0,0]
+        return action.data[0,0] # Trick to separate the value from the extra dimension in the batch.
     
     def learn(self, batch_state, batch_next_state, batch_reward, batch_action):
         outputs = self.model(batch_state).gather(1, batch_action.unsqueeze(1)).squeeze(1)
