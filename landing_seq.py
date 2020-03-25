@@ -118,10 +118,14 @@ class Landing_Sequence():
         action = probs.multinomial(1)
         return action.data[0,0] # Trick to separate the value from the extra dimension in the batch.
     
-    # 
-    #
+    # Function that takes care of forward propagation, calculating the losses and back propagation.
     def learn(self, batch_state, batch_next_state, batch_reward, batch_action):
+        # The gather function is a trick used to only extract the action the network selects as 
+        # its output. However since batch_action does not have an added dimension like batch_state,
+        # we need to use the unsqueeze function. Finally, squeeze collapses this extra batch
+        # dimension to turn back into a simple vector of outputs.
         outputs = self.model(batch_state).gather(1, batch_action.unsqueeze(1)).squeeze(1)
+        
         next_outputs = self.model(batch_next_state).detach().max(1)[0]
         target = self.gamma*next_outputs + batch_reward
         td_loss = F.smooth_l1_loss(outputs, target)
