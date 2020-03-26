@@ -137,8 +137,14 @@ class Landing_Sequence():
         # Update weights of the network
         self.optimizer.step()
     
+    # Updating everything that needs to be updated, and return a value for an action to take.
+    # When the lander reaches a new state, the signal is converted into a torch tensor, then
+    # it is passed into the select_action function. The event tuple is created, then added to
+    # experience replay memory, and the sliding reward window is appended to. Finally the new 
+    # action is returned to the function call in the 'moon.py' file.
     def update(self, reward, new_signal):
         new_state = torch.Tensor(new_signal).float().unsqueeze(0)
+        # We need to make the last_action and last_reward a torch tensor that contains an integer
         self.memory.push((self.last_state, new_state, torch.LongTensor([int(self.last_action)]), torch.Tensor([self.last_reward])))
         action = self.select_action(new_state)
         if len(self.memory.memory) > 100:
