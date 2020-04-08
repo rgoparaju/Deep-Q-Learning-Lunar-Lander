@@ -46,8 +46,8 @@ class NeuralNetwork(nn.Module):
     # Rectifier function activates the neurons during forward propagation. The rectifier is used
     # because this is a nonlinear problem.
     def forward(self, state): # state is the input to the neural network
-        x = F.relu(self.fc1(state))
-        y = F.relu(self.fc2(x))
+        x = F.sigmoid(self.fc1(state))
+        y = F.sigmoid(self.fc2(x))
         q_values = self.fc3(y)
         
         # The q-values are how the AI determines which action to take. If a given action has a 
@@ -114,7 +114,7 @@ class Landing_Sequence():
     # The T parameter will be able to change how 'certain' the network is of taking any given
     # action, so changing it will change the learning behavior (higher is more certain).
     def select_action(self, state):
-        probs = F.softmax(self.model(Variable(state, requires_grad = True))*50) # T=50
+        probs = F.softmax(self.model(Variable(state, requires_grad = True))*75) # T=75
         action = probs.multinomial(1)
         return action.data[0,0] # Trick to separate the value from the extra dimension in the batch.
     
