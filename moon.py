@@ -45,6 +45,13 @@ class LanderGame():
         self.amount_of_fuel = Text(Point(45,575), "Fuel: " + str(apollo1.fuel))
         self.amount_of_fuel.setFill("white")
         self.amount_of_fuel.draw(wn)
+        
+        self.x_speed = Text(Point(100, 550), "")
+        self.x_speed.setFill("white")
+        self.x_speed.draw(wn)
+        self.y_speed = Text(Point(100, 525), "")
+        self.y_speed.setFill("white")
+        self.y_speed.draw(wn)
         #-------------------------------------------------------------------------------------
         self.game_state = True
         self.playGame()
@@ -186,7 +193,7 @@ class LanderGame():
         isLand = self.isLanded(elevation, slope)
         
         
-        signal = [elevation, slope, lander_angle, -lander_angle, lander_speed]
+        signal = [elevation, slope, lander_angle, apollo1.dx, apollo1.dy]
         action = pilot.update(last_reward, signal)
         scores.append(pilot.score())
         
@@ -206,8 +213,10 @@ class LanderGame():
         
         if(isCrash == False and isLand == False):
             last_reward = -0.2
-            if slope <= 0.05: last_reward = 0.5
-            if lander_angle <= 1: last_reward = 0.5
+            if slope <= 0.05: last_reward = 0.1
+            if lander_angle <= 2: last_reward = 0.1
+            if lander_speed <= 0.15: last_reward = 0.1
+            if lander_speed <= 0.15 and lander_angle <= 2: last_reward = 0.2
             
             # Optimal amount of delay for smooth animation speed
             time.sleep(0.035)
@@ -220,11 +229,13 @@ class LanderGame():
             
             # Update the amount of fuel the lander has
             self.amount_of_fuel.setText("Fuel: " + str(apollo1.fuel))
+            self.x_speed.setText("Lander X-Speed: " + str(round(apollo1.dx, 4)))
+            self.y_speed.setText("Lander Y-Speed: " + str(round(apollo1.dy, 4)))
             
         if isCrash:
             print("Crashed!")
             time.sleep(1)
-            last_reward = -2 # Bad reward for crashing
+            last_reward = -1 # Bad reward for crashing
             self.reset()
         if isLand:
             print("Landed!")
