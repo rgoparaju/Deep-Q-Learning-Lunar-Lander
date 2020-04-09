@@ -31,8 +31,8 @@ class Lander():
             
             # The thruster is being fired perpendicularly from the bottom of the lander,
             # thus it is necessary to decompose the change-in-velocity vector into x and y components        
-            self.dy += 0.0005*np.cos(angle)
-            self.dx += 0.0005*np.sin(angle)
+            self.dy += 0.002*np.cos(angle)
+            self.dx += 0.002*np.sin(angle)
         
     def rotate(self, theta):
         center = self.getCenter()
@@ -54,7 +54,7 @@ class Lander():
         # the angle is calculated. To fix this, I made the maximum rotation angle 89.999 degrees in 
         # both directions, which is close enough to 90 degrees that for all purposes it is the same.
         old_points = self.lander.getPoints()
-        if np.degrees(self.getAngle()) < 89.999 and np.degrees(self.getAngle()) > -89.999:
+        if np.degrees(self.getAngle()) < 87.5 and np.degrees(self.getAngle()) > -87.5:
             new_points = []
             new_vectors = []
             for p in old_points:
@@ -79,9 +79,9 @@ class Lander():
         if p3.getX() - p4.getX() != 0:
             self.angle = np.arctan((p4.getY() - p3.getY()) / (p4.getX() - p3.getX()))
         elif p4.getY() > p3.getY(): 
-            self.angle = -90
+            self.angle = -87.5
         elif p3.getY() > p4.getY():
-            self.angle = 90
+            self.angle = 87.5
         return self.angle
         
     def getCenter(self):
