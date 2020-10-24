@@ -39,16 +39,20 @@ class NeuralNetwork(nn.Module):
         # A full connection is the set of connections between each layer of neurons. Since there are
         # two hidden layers, there are 3 full connections between each layer. 30 means that there
         # are 30 neurons in each layer.
-        self.fc1 = nn.Linear(input_size, 30)
-        self.fc2 = nn.Linear(30,30)
-        self.fc3 = nn.Linear(30, actions)
+        self.fc1 = nn.Linear(input_size, 40)
+        self.fc2 = nn.Linear(40,20)
+        self.fc3 = nn.Linear(20,10)
+        self.fc4 = nn.Linear(10,5)
+        self.fc5 = nn.Linear(5, actions)
     
     # Rectifier function activates the neurons during forward propagation. The rectifier is used
     # because this is a nonlinear problem.
     def forward(self, state): # state is the input to the neural network
-        x = F.sigmoid(self.fc1(state))
-        y = F.sigmoid(self.fc2(x))
-        q_values = self.fc3(y)
+        a = F.relu(self.fc1(state))
+        b = F.relu(self.fc2(a))
+        c = F.relu(self.fc3(b))
+        d = F.relu(self.fc4(c))
+        q_values = self.fc5(d)
         
         # The q-values are how the AI determines which action to take. If a given action has a 
         # higher q-value, it means that the AI has a higher probability of choosing that action.
